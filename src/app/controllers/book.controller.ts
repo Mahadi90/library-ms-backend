@@ -25,7 +25,6 @@ bookRoute.post('/', async (req: Request, res: Response) => {
 
 // get api
 bookRoute.get('/', async (req: Request, res: Response) => {
-    console.log(req.query);
     try {
         const { filter, sortBy = 'createdAt', sort = 'desc', limit = '10' } = req.query;
 
@@ -36,22 +35,73 @@ bookRoute.get('/', async (req: Request, res: Response) => {
 
         const sortBook = sort === 'asc' ? 1 : -1;
 
-        const data =  await Book.find(query).sort({[sortBy as string]: sortBook}).limit(parseInt(limit as string));
-        
-    res.status(201).json({
-      success: true,
-      message: 'Books retrieved successfully',
-      data
-    });
-    }
-     catch (error) {
-            if (error instanceof mongoose.Error.ValidationError) {
-                res.status(401).send({
-                    message: 'Books retrieved failed',
-                    success: false,
-                    error
-                })
-            }
-        }
+        const data = await Book.find(query).sort({ [sortBy as string]: sortBook }).limit(parseInt(limit as string));
 
-    })
+        res.status(201).json({
+            success: true,
+            message: 'Books retrieved successfully',
+            data
+        });
+    }
+    catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            res.status(401).send({
+                message: 'Books retrieved failed',
+                success: false,
+                error
+            })
+        }
+    }
+
+})
+
+//get by Id api
+bookRoute.get('/:bookId', async (req: Request, res: Response) => {
+    try {
+        const bookId = req.params.bookId;
+        const data = await Book.findById(bookId);
+        res.status(201).json({
+            success: true,
+            message: 'Books retrieved successfully',
+            data
+        });
+    }
+    catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            res.status(401).send({
+                message: 'Books retrieved failed',
+                success: false,
+                error
+            })
+        }
+    }
+})
+
+// update book api
+bookRoute.put('/:bookId', async (req: Request, res: Response) => {
+    try {
+        const bookId = req.params.bookId;
+        const updatedBook = req.body;
+        const data = await Book.findByIdAndUpdate(bookId, updatedBook, { new: true });
+        if (!updatedBook) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found',
+            });
+        }
+        res.status(201).json({
+            success: true,
+            message: 'Books updated successfully',
+            data
+        });
+    }
+    catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            res.status(501).send({
+                message: 'Books update failed',
+                success: false,
+                error
+            })
+        }
+    }
+}) 
