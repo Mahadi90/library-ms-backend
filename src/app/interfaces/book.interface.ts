@@ -7,3 +7,4 @@ export interface IBook{
     copies : number,
     available : boolean
 }
+
