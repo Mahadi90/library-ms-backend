@@ -22,7 +22,7 @@ const bookSchema = new Schema<IBook>({
     isbn: {
         type: String,
         required: true,
-        unique: true,
+        unique: [true, 'Already eixist {VALUE}, it must be unique'],
         trim: true
     },
     description: {
