@@ -15,6 +15,7 @@ const bookSchema = new Schema<IBook>({
     genre: {
         type: String,
         required: true,
+        uppercase : true,
         enum: ['FICTION', 'NON_FICTION', 'SCIENCE', 'HISTORY', 'BIOGRAPHY', 'FANTASY'],
         trim: true
     },
@@ -42,6 +43,9 @@ const bookSchema = new Schema<IBook>({
         type: Boolean,
         default: true
     }
+},{
+    versionKey : false,
+    timestamps : true
 })
 
 export const Book = model('Book', bookSchema)
