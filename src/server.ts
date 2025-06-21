@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 dotenv.config()
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let server: Server;
 const port = process.env.PORT;
 

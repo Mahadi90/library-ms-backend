@@ -15,17 +15,16 @@ borrowRoute.post('/', async (req: Request, res: Response) => {
         if (!targetedBook) {
             res.status(404).json({ success: false, message: 'Book not found' })
         }
-        else {
-            if (targetedBook?.copies < quantity) {
-                res.status(400).send({ success: false, message: `only ${targetedBook?.copies} copies are available` })
-            };
-
+        else if (targetedBook?.copies >= quantity) {
             await targetedBook?.decreaseCopies(quantity);
-
-            const data = await Borrow.create({ book: targetedBook._id, quantity, dueDate });
+            const data = await Borrow.create({ book: targetedBook?._id, quantity, dueDate });
 
             res.status(201).send({ success: true, message: 'Book borrowed successfully', data })
-        }
+        };
+
+        res.status(400).send({ success: false, message: `only ${targetedBook?.copies} copies are available` })
+
+
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
             res.status(401).send({
@@ -34,6 +33,11 @@ borrowRoute.post('/', async (req: Request, res: Response) => {
                 error
             })
         }
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: (error as Error).message,
+        });
     }
 })
 
@@ -72,11 +76,11 @@ borrowRoute.get('/', async (req: Request, res: Response) => {
             message: 'Borrowed books summary retrieved successfully',
             data
         })
-    } catch (error: any) {
+    } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Failed to retrieve borrowed books summary',
-            error: error.message,
+            message: 'Get Borrow details failed',
+            error: (error as Error).message,
         });
     }
 

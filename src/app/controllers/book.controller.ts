@@ -18,9 +18,12 @@ bookRoute.post('/', async (req: Request, res: Response) => {
                 error
             })
         }
+        res.status(500).json({
+            success: false,
+            message: 'Book created failed',
+            error: (error as Error).message,
+        });
     }
-
-
 })
 
 // get api
@@ -28,7 +31,7 @@ bookRoute.get('/', async (req: Request, res: Response) => {
     try {
         const { filter, sortBy = 'createdAt', sort = 'desc', limit = '10' } = req.query;
 
-        const query: Record<string, any> = {};
+        const query: Record<string, unknown> = {};
         if (filter) {
             query.genre = filter
         }
@@ -43,14 +46,13 @@ bookRoute.get('/', async (req: Request, res: Response) => {
             data
         });
     }
+
     catch (error) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            res.status(401).send({
-                message: 'Books retrieved failed',
-                success: false,
-                error
-            })
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Book retraived failed',
+            error: (error as Error).message,
+        });
     }
 
 })
@@ -67,13 +69,11 @@ bookRoute.get('/:bookId', async (req: Request, res: Response) => {
         });
     }
     catch (error) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            res.status(401).send({
-                message: 'Books retrieved failed',
-                success: false,
-                error
-            })
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Single book retrived failed',
+            error: (error as Error).message,
+        });
     }
 })
 
@@ -96,40 +96,38 @@ bookRoute.put('/:bookId', async (req: Request, res: Response) => {
         });
     }
     catch (error) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            res.status(501).send({
-                message: 'Books update failed',
-                success: false,
-                error
-            })
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Books update failed',
+            error: (error as Error).message,
+        });
     }
 })
 
 // delete book api
 bookRoute.delete('/:bookId', async (req: Request, res: Response) => {
-  try {
-    const { bookId } = req.params;
+    try {
+        const { bookId } = req.params;
 
-    const deletedBook = await Book.findByIdAndDelete(bookId);
+        const deletedBook = await Book.findByIdAndDelete(bookId);
 
-    if (!deletedBook) {
-       res.status(404).json({
-        success: false,
-        message: 'Book not found',
-      });
+        if (!deletedBook) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found',
+            });
+        }
+
+        res.status(200).send({
+            success: true,
+            message: 'Book deleted successfully',
+            data: null,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete book',
+            error: (error as Error).message,
+        });
     }
-
-    res.status(200).send({
-      success: true,
-      message: 'Book deleted successfully',
-      data: null,
-    });
-  } catch (error: any) {
-    res.status(501).json({
-      success: false,
-      message: 'Failed to delete book',
-      error: error.message,
-    });
-  }
 });
