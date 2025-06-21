@@ -16,6 +16,8 @@ A RESTful API for managing books and borrow records in a library system.
 
 ---
 
+## Live link : https://library-ms-assignment-backend.vercel.app/
+
 ## 🛠️ Tech Stack
 
 - Node.js
@@ -25,25 +27,6 @@ A RESTful API for managing books and borrow records in a library system.
 - ESLint + Prettier
 - Dotenv
 
----
-
-## 📁 Folder Structure
-
-src/
-├── app/
-│ ├── controllers/
-│ │ ├── book.controller.ts
-│ │ └── borrow.controller.ts
-│ ├── models/
-│ │ ├── book.model.ts
-│ │ └── borrow.model.ts
-│ ├── routes/
-│ │ ├── book.route.ts
-│ │ └── borrow.route.ts
-├── app.ts
-├── server.ts
-
----
 
 ---
 
@@ -52,7 +35,7 @@ src/
 ### ✅ 1. Clone & Install Dependencies
 
 ```bash
-git clone https://github.com/yourusername/library-ms-backend.git
+git clone https://github.com/mahadi90/library-ms-backend.git
 cd library-ms-backend
 npm install
 ```
@@ -64,8 +47,7 @@ DATABASE_URL=your_mongodb_uri_here
 npm run dev
 
 # Production
-npm run build
-npm start
+### tsc
 
 
 🧪 API Endpoints
