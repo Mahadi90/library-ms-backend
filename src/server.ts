@@ -1,13 +1,16 @@
 import { Server } from 'http';
 import app from './app';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 let server: Server;
-const port = 5000;
+const port = process.env.PORT;
 
 function main() {
     try {
-        mongoose.connect(`mongodb+srv://mahadimhs787:mongoosemaster@cluster0.wpfolqw.mongodb.net/library-management-system?retryWrites=true&w=majority&appName=Cluster0`);
+        mongoose.connect(`${process.env.DATABASE_URL}`);
         
         console.log('Server connected to mongoose database');
         

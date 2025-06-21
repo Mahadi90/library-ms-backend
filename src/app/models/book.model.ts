@@ -48,4 +48,13 @@ const bookSchema = new Schema<IBook>({
     timestamps : true
 })
 
+bookSchema.methods.decreaseCopies = async function (quantity: number): Promise<void> {
+  this.copies -= quantity;
+  if (this.copies <= 0) {
+    this.copies = 0;
+    this.available = false;
+  }
+  await this.save();
+};
+
 export const Book = model<IBook>('Book', bookSchema)
