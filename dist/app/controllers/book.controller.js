@@ -32,6 +32,11 @@ exports.bookRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, func
                 error
             });
         }
+        res.status(500).json({
+            success: false,
+            message: 'Book created failed',
+            error: error.message,
+        });
     }
 }));
 // get api
@@ -51,13 +56,11 @@ exports.bookRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
     catch (error) {
-        if (error instanceof mongoose_1.default.Error.ValidationError) {
-            res.status(401).send({
-                message: 'Books retrieved failed',
-                success: false,
-                error
-            });
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Book retraived failed',
+            error: error.message,
+        });
     }
 }));
 //get by Id api
@@ -72,13 +75,11 @@ exports.bookRoute.get('/:bookId', (req, res) => __awaiter(void 0, void 0, void 0
         });
     }
     catch (error) {
-        if (error instanceof mongoose_1.default.Error.ValidationError) {
-            res.status(401).send({
-                message: 'Books retrieved failed',
-                success: false,
-                error
-            });
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Single book retrived failed',
+            error: error.message,
+        });
     }
 }));
 // update book api
@@ -100,13 +101,11 @@ exports.bookRoute.put('/:bookId', (req, res) => __awaiter(void 0, void 0, void 0
         });
     }
     catch (error) {
-        if (error instanceof mongoose_1.default.Error.ValidationError) {
-            res.status(501).send({
-                message: 'Books update failed',
-                success: false,
-                error
-            });
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Books update failed',
+            error: error.message,
+        });
     }
 }));
 // delete book api
@@ -127,12 +126,10 @@ exports.bookRoute.delete('/:bookId', (req, res) => __awaiter(void 0, void 0, voi
         });
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(501).json({
-                success: false,
-                message: 'Failed to delete book',
-                error: error.message,
-            });
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete book',
+            error: error.message,
+        });
     }
 }));

@@ -12,17 +12,18 @@ borrowRoute.post('/', async (req: Request, res: Response) => {
 
         const targetedBook = await Book.findById(bookId);
 
-        if (!targetedBook) {
-            res.status(404).json({ success: false, message: 'Book not found' })
+        if (targetedBook) {
+            if (targetedBook.copies >= quantity) {
+                await targetedBook?.decreaseCopies(quantity);
+
+                const data = await Borrow.create({ book: targetedBook._id, quantity, dueDate });
+
+                res.status(201).send({ success: true, message: 'Book borrowed successfully', data })
+            };
         }
-        else if (targetedBook?.copies >= quantity) {
-            await targetedBook?.decreaseCopies(quantity);
-            const data = await Borrow.create({ book: targetedBook?._id, quantity, dueDate });
+        res.status(401).send({ success: false, message: 'Unavailable books'})
 
-            res.status(201).send({ success: true, message: 'Book borrowed successfully', data })
-        };
 
-        res.status(400).send({ success: false, message: `only ${targetedBook?.copies} copies are available` })
 
 
     } catch (error) {

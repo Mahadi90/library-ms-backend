@@ -23,18 +23,15 @@ exports.borrowRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fu
     try {
         const { book: bookId, quantity, dueDate } = req.body;
         const targetedBook = yield book_model_1.Book.findById(bookId);
-        if (!targetedBook) {
-            res.status(404).json({ success: false, message: 'Book not found' });
-        }
-        else {
-            if ((targetedBook === null || targetedBook === void 0 ? void 0 : targetedBook.copies) < quantity) {
-                res.status(400).send({ success: false, message: `only ${targetedBook === null || targetedBook === void 0 ? void 0 : targetedBook.copies} copies are available` });
+        if (targetedBook) {
+            if (targetedBook.copies >= quantity) {
+                yield (targetedBook === null || targetedBook === void 0 ? void 0 : targetedBook.decreaseCopies(quantity));
+                const data = yield borrow_model_1.Borrow.create({ book: targetedBook._id, quantity, dueDate });
+                res.status(201).send({ success: true, message: 'Book borrowed successfully', data });
             }
             ;
-            yield (targetedBook === null || targetedBook === void 0 ? void 0 : targetedBook.decreaseCopies(quantity));
-            const data = yield borrow_model_1.Borrow.create({ book: targetedBook._id, quantity, dueDate });
-            res.status(201).send({ success: true, message: 'Book borrowed successfully', data });
         }
+        res.status(401).send({ success: false, message: 'Unavailable books' });
     }
     catch (error) {
         if (error instanceof mongoose_1.default.Error.ValidationError) {
@@ -44,6 +41,11 @@ exports.borrowRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fu
                 error
             });
         }
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
     }
 }));
 // get borrow api with aggregation
@@ -82,12 +84,10 @@ exports.borrowRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(501).json({
-                success: false,
-                message: 'Failed to delete book',
-                error: error.message,
-            });
-        }
+        res.status(500).json({
+            success: false,
+            message: 'Get Borrow details failed',
+            error: error.message,
+        });
     }
 }));

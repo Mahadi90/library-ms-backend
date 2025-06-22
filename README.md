@@ -39,17 +39,19 @@ git clone https://github.com/mahadi90/library-ms-backend.git
 cd library-ms-backend
 npm install
 ```
+---
 ### 📄 .env File Setup
 PORT=5000/3000 or your localhoost port
+
 DATABASE_URL=your_mongodb_uri_here
 
 # Development
 npm run dev
 
 # Production
-### tsc
+## tsc
 
-
+---
 🧪 API Endpoints
 📘 Books
 
@@ -66,6 +68,12 @@ npm run dev
 
 🧾 Get All Books
 ### GET /api/books
+
+🗑 Get single book
+### GET /api/books/:id
+
+🗑 Update Book
+### PUT /api/books/:id
 
 🗑 Delete Book
 ### DELETE /api/books/:id
