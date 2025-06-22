@@ -60,9 +60,13 @@ npm run dev
 
 ```json
 {
-  "title": "JavaScript Essentials",
-  "isbn": "JS123456",
-  "copies": 5
+     "title": "Python Crash Course",
+      "author": "Eric Matthes",
+      "genre": "SCIENCE",
+      "isbn": "9781593279288",
+      "description": "A fast-paced introduction to Python programming.",
+      "copies": 10,
+      "available": true
 }
 ```
 
