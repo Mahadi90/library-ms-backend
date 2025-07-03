@@ -4,6 +4,7 @@ export interface IBook{
     title : string,
     author : string,
     genre : string,
+    img : string,
     isbn : string,
     description : string,
     copies : number,

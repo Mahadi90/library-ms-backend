@@ -15,10 +15,22 @@ const bookSchema = new Schema<IBook>({
     genre: {
         type: String,
         required: true,
-        uppercase : true,
+        uppercase: true,
         enum: ['FICTION', 'NON_FICTION', 'SCIENCE', 'HISTORY', 'BIOGRAPHY', 'FANTASY'],
         trim: true
     },
+    img: {
+        type: String,
+        trim: true,
+        default: '',
+        validate: {
+            validator: function (v: string) {
+                return /^https?:\/\/.+$/i.test(v) || v === '';
+            },
+            message: 'Image URL must be a valid URL.',
+        },
+    },
+
     isbn: {
         type: String,
         required: true,
@@ -43,18 +55,18 @@ const bookSchema = new Schema<IBook>({
         type: Boolean,
         default: true
     }
-},{
-    versionKey : false,
-    timestamps : true
+}, {
+    versionKey: false,
+    timestamps: true
 })
 
 bookSchema.methods.decreaseCopies = async function (quantity: number): Promise<void> {
-  this.copies -= quantity;
-  if (this.copies <= 0) {
-    this.copies = 0;
-    this.available = false;
-  }
-  await this.save();
+    this.copies -= quantity;
+    if (this.copies <= 0) {
+        this.copies = 0;
+        this.available = false;
+    }
+    await this.save();
 };
 
 export const Book = model<IBook>('Book', bookSchema)

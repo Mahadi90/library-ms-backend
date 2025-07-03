@@ -42,7 +42,7 @@ exports.bookRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, func
 // get api
 exports.bookRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { filter, sortBy = 'createdAt', sort = 'desc', limit = '10' } = req.query;
+        const { filter, sortBy = 'createdAt', sort = 'desc', limit } = req.query;
         const query = {};
         if (filter) {
             query.genre = filter;

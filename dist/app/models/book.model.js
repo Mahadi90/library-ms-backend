@@ -29,6 +29,17 @@ const bookSchema = new mongoose_1.Schema({
         enum: ['FICTION', 'NON_FICTION', 'SCIENCE', 'HISTORY', 'BIOGRAPHY', 'FANTASY'],
         trim: true
     },
+    img: {
+        type: String,
+        trim: true,
+        default: '',
+        validate: {
+            validator: function (v) {
+                return /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(v) || v === '';
+            },
+            message: 'Image URL must be a valid URL (jpg, png, etc.)',
+        },
+    },
     isbn: {
         type: String,
         required: true,

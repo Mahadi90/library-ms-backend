@@ -1,3 +1,4 @@
+
 import express, { Request, Response } from "express";
 import { Book } from "../models/book.model";
 import mongoose from "mongoose";
@@ -29,7 +30,7 @@ bookRoute.post('/', async (req: Request, res: Response) => {
 // get api
 bookRoute.get('/', async (req: Request, res: Response) => {
     try {
-        const { filter, sortBy = 'createdAt', sort = 'desc', limit = '10' } = req.query;
+        const { filter, sortBy = 'createdAt', sort = 'desc', limit } = req.query;
 
         const query: Record<string, unknown> = {};
         if (filter) {
@@ -89,6 +90,7 @@ bookRoute.put('/:bookId', async (req: Request, res: Response) => {
                 message: 'Book not found',
             });
         }
+      
         res.status(201).json({
             success: true,
             message: 'Books updated successfully',
