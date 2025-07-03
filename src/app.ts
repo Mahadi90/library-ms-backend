@@ -7,7 +7,9 @@ const app : Application = express()
 
 // middleware
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+    origin : ['https://library-ms-tau.vercel.app']
+}))
 app.use('/api/books', bookRoute);
 app.use('/api/borrow', borrowRoute)
 
